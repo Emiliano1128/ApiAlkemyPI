@@ -36,11 +36,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Contexto de la base de datos
 builder.Services.AddDbContext<AlkemyDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionAlkemy"))
 );
 var app = builder.Build();
-
+// migracion para la creacion de la Base de Datos y sus tablas
 /*using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AlkemyDbContext>();
@@ -58,7 +59,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
+// Autorizacion con JWT (middlerware)
 app.UseAuthorization();
 
 app.MapControllers();
