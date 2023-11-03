@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiAlkemyPI.Controllers
 {
@@ -23,19 +24,20 @@ namespace ApiAlkemyPI.Controllers
 
         [HttpPost]
         [Route("validar")]
-        public async Task<IActionResult> Validar([FromBody] UsuariosModel request)
+        public async Task<IActionResult> Validar([FromBody] AuthModel request)
         {
-            var usuariosModel = await _context.UsuariosModels.FindAsync(request.CodUsuario);
+            var usuariosModel = await _context.UsuariosModels.FirstOrDefaultAsync(u => u.Nombre == request.Nombre);
+            //var usuariosModel = await _context.UsuariosModels.Find(u => u.Nombre == request.Nombre && u.Contraseña == request.Contraseña);
             if (usuariosModel == null)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, new { token = "inexistente o inhabilitado" });
             }
-            if (request.CodUsuario == usuariosModel.CodUsuario && request.Nombre == usuariosModel.Nombre)
+            if (request.Contraseña == usuariosModel.Contraseña && request.Nombre == usuariosModel.Nombre)
             {
                 var keyBytes = Encoding.ASCII.GetBytes(secretKey);
                 var claims = new ClaimsIdentity();
 
-                claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, request.CodUsuario.ToString()));
+                claims.AddClaim(new Claim(ClaimTypes.NameIdentifier, request.Contraseña.ToString()));
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {

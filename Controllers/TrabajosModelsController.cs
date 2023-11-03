@@ -13,7 +13,7 @@ namespace ApiAlkemyPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TrabajosModelsController : ControllerBase
     {
         private readonly AlkemyDbContext _context;
