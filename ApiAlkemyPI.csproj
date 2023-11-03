@@ -28,4 +28,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EmpresaAlkemyServicios\EmpresaAlkemyServicios.csproj" />
+  </ItemGroup>
+
 </Project>
